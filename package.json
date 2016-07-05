@@ -1,0 +1,28 @@
+{
+  "name": "etcd-node-client",
+  "version": "0.0.1",
+  "description": "A gRPC based etcd client",
+  "author": "yiwei",
+  "keywords": [
+    "etcd",
+    "grpc"
+  ],
+  "licenses": [
+    { 
+      "type": "MIT"
+    }
+  ],
+  "dependencies": {
+    "grpc": "^0.15.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ychen11/etcd-node-client.git"
+  },
+  "bugs": {},
+  "scripts": {},
+  "engines": {
+    "node": ">=0.12.0"
+  }
+}
