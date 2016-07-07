@@ -1,0 +1,45 @@
+syntax = "proto3";
+package etcdserverpb;
+
+
+// for grpc-gateway
+
+service KV {
+  // Range gets the keys in the range from the key-value store.
+
+
+  // Put puts the given key into the key-value store.
+  // A put request increments the revision of the key-value store
+  // and generates one event in the event history.
+  rpc Put(PutRequest) returns (PutResponse) {
+      option (google.api.http) = {
+        post: "/v3alpha/kv/put"
+        body: "*"
+    };
+  }
+}
+
+message ResponseHeader {
+  // cluster_id is the ID of the cluster which sent the response.
+  uint64 cluster_id = 1;
+  // member_id is the ID of the member which sent the response.
+  uint64 member_id = 2;
+  // revision is the key-value store revision when the request was applied.
+  int64 revision = 3;
+  // raft_term is the raft term when the request was applied.
+  uint64 raft_term = 4;
+}
+
+message PutRequest {
+  // key is the key, in bytes, to put into the key-value store.
+  bytes key = 1;
+  // value is the value, in bytes, to associate with the key in the key-value store.
+  bytes value = 2;
+  // lease is the lease ID to associate with the key in the key-value store. A lease
+  // value of 0 indicates no lease.
+  int64 lease = 3;
+}
+
+message PutResponse {
+  ResponseHeader header = 1;
+}
