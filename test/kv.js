@@ -31,5 +31,36 @@ describe('Base', function() {
         done();
       })
     });
+  });
+
+  describe('Delete simple data', function () {
+    it ('Should returns correct response', function (done) {
+      etcdClient.deleteRange({
+        key: new Buffer('name')
+      }, function (err, res) {
+        assert.ifError(err);
+        done();
+      });
+    });
+  });
+
+  describe('Re-get deleted data', function () {
+    it ('Should returns empty result', function (done) {
+      etcdClient.range({
+        key: new Buffer('name'),
+        limit: 1,
+        revision: 0,
+        sort_order: 'NONE',
+        sort_target: 'KEY',
+        serializable: true,
+        keys_only: false,
+        count_only: false
+      }, function (err, res) {
+        assert.ifError(err);
+        assert.strictEqual(res.kvs.length, 0);
+        done();
+      });
+    });
   })
 });
+
