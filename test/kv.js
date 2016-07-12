@@ -7,7 +7,11 @@ describe('Base', function() {
 
   describe('Insert simple data', function () {
     it('Should insert correctly', function (done) {
-      etcdClient.put('name', 'mario', 0, function (err, res) {
+      etcdClient.kv.put({
+        key: new Buffer('name'),
+        value: new Buffer('mario'),
+        lease: 0
+      },function (err, res) {
         assert.ifError(err);
         done();
       });
@@ -16,7 +20,7 @@ describe('Base', function() {
 
   describe('Get simple data', function () {
     it ('Should returns data correctly', function (done) {
-      etcdClient.range({
+      etcdClient.kv.range({
         key: new Buffer('name'),
         limit: 1,
         revision: 0,
@@ -35,7 +39,7 @@ describe('Base', function() {
 
   describe('Delete simple data', function () {
     it ('Should returns correct response', function (done) {
-      etcdClient.deleteRange({
+      etcdClient.kv.deleteRange({
         key: new Buffer('name')
       }, function (err, res) {
         assert.ifError(err);
@@ -46,7 +50,7 @@ describe('Base', function() {
 
   describe('Re-get deleted data', function () {
     it ('Should returns empty result', function (done) {
-      etcdClient.range({
+      etcdClient.kv.range({
         key: new Buffer('name'),
         limit: 1,
         revision: 0,
