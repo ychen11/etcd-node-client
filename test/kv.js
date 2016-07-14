@@ -19,7 +19,7 @@ describe('Base', function() {
   });
 
   describe('Get simple data', function () {
-    it ('Should returns data correctly', function (done) {
+    it ('Should return data correctly', function (done) {
       etcdClient.kv.range({
         key: new Buffer('name'),
         limit: 1,
@@ -38,7 +38,7 @@ describe('Base', function() {
   });
 
   describe('Delete simple data', function () {
-    it ('Should returns correct response', function (done) {
+    it ('Should return correct response', function (done) {
       etcdClient.kv.deleteRange({
         key: new Buffer('name')
       }, function (err, res) {
@@ -49,7 +49,7 @@ describe('Base', function() {
   });
 
   describe('Re-get deleted data', function () {
-    it ('Should returns empty result', function (done) {
+    it ('Should return empty result', function (done) {
       etcdClient.kv.range({
         key: new Buffer('name'),
         limit: 1,
@@ -65,6 +65,39 @@ describe('Base', function() {
         done();
       });
     });
-  })
+  });
+
+  describe('Transaction ops', function () {
+    it ('Should return correct response', function (done) {
+      etcdClient.kv.txn({
+        compare: [
+          {
+            result: 'EQUAL',
+            target: 'CREATE',
+            key: new Buffer('name'),
+            version: 1
+          }
+          ],
+        success: [
+          {
+            request_put: {
+            key: new Buffer('id'),
+            value: new Buffer('123'),
+            lease: 0}
+          },
+          {
+            request_put: {
+              key: new Buffer('uid'),
+              value: new Buffer('yoyoyo'),
+              lease: 0
+            }
+          }
+          ],
+        failure: []
+      }, function (err, res) {
+        done();
+      });
+    });
+  });
 });
 
