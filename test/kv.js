@@ -3,7 +3,7 @@ var client = require('../');
 
 describe('Base', function() {
 
-  var etcdClient = new client.Client('127.0.0.1:2379');
+  var etcdClient = new client.Client('127.0.0.1:22379');
 
   describe('Insert simple data', function () {
     it('Should insert correctly', function (done) {
