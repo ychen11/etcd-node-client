@@ -33,7 +33,7 @@ describe('Base', function() {
         assert.ifError(err);
         assert.strictEqual(res.kvs[0].value.toString(), 'mario');
         done();
-      })
+      });
     });
   });
 
