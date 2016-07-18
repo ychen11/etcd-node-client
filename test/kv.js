@@ -99,5 +99,17 @@ describe('Base', function() {
       });
     });
   });
+
+  describe('Compact ops', function () {
+    it ('Should return correct response', function (done) {
+      etcdClient.kv.compact({
+        revision: 5,
+        physical: false
+      }, function (err, res) {
+        assert.ifError(err);
+        done();
+      });
+    });
+  });
 });
 
