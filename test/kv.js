@@ -50,22 +50,20 @@ describe('Base', function() {
 
   describe('Re-get deleted data', function () {
     it ('Should return empty result', function (done) {
-      setTimeout(function () {
-        etcdClient.kv.range({
-          key: new Buffer('name'),
-          limit: 1,
-          revision: 0,
-          sort_order: 'NONE',
-          sort_target: 'KEY',
-          serializable: true,
-          keys_only: false,
-          count_only: false
-        }, function (err, res) {
-          assert.ifError(err);
-          assert.strictEqual(res.kvs.length, 0);
-          done();
-        });
-      }, 200);
+      etcdClient.kv.range({
+        key: new Buffer('name'),
+        limit: 1,
+        revision: 0,
+        sort_order: 'NONE',
+        sort_target: 'KEY',
+        serializable: false,
+        keys_only: false,
+        count_only: false
+      }, function (err, res) {
+        assert.ifError(err);
+        assert.strictEqual(res.kvs.length, 0);
+        done();
+      });
     });
   });
 
