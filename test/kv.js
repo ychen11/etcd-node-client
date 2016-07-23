@@ -1,9 +1,9 @@
 var assert = require('assert');
-var client = require('../');
+var clientObj = require('./a');
 
-describe('Base', function() {
+describe('KV Base', function() {
 
-  var etcdClient = new client.Client(['127.0.0.1:2379', '127.0.0.1:22379', '127.0.0.1:32379'], 'RoundRobin');
+  var etcdClient = clientObj.client;
 
   describe('Insert simple data', function () {
     it('Should insert correctly', function (done) {
