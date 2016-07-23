@@ -6,10 +6,22 @@ A gRPC based etcd client written in node.js
 * node.js version supported: > 0.12 (grpc only works on node 0.12 or above)
 
 ### About this client:
-* It is still in progress, currently it supports 4 etcd V3.0 api: ```Put, Range, DeleteRange, Txn``` in KV service. Please check out [this](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md) for more about etcd official API. 
+* It is still in progress, currently it supports some but not all v3.0 APIs (Adding). Please check out [this](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md) for more about etcd official API. 
 * Proto files are directly copied from etcd repo, if there is something wrong, please check create an issue here and follow the etcd official proto files.
 
-### How to use:
+### etcd V3.0 APIs supported (Updating):
+* KV service:
+  - put
+  - range
+  - deleteRange
+  - txn
+  - compact
+
+* Lease service:
+  - leaseGrant
+  - leaseRevoke
+
+### How to use (Take the KV service as an example):
 * Create a client:
 ```javascript
 var etcd = require('etcd-node-client');
