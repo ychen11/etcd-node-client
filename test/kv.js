@@ -81,9 +81,10 @@ describe('KV Base', function() {
         success: [
           {
             request_put: {
-            key: new Buffer('id'),
-            value: new Buffer('123'),
-            lease: 0}
+              key: new Buffer('id'),
+              value: new Buffer('123'),
+              lease: 0
+            }
           },
           {
             request_put: {
