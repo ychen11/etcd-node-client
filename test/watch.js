@@ -3,13 +3,30 @@ var clientObj = require('./a');
 
 
 describe('Watch ops', function() {
-  var etcdClient = clientObj.client;
+  var etcdClient = clientObj.client,
+      count = 0;
 
-  describe('Create', function () {
+  describe('Created kv', function () {
+    it ('Added new kv pair', function(done) {
+      etcdClient.kv.put({
+        key: new Buffer('id'),
+        value: new Buffer('koopa'),
+        lease: 0
+      }, function (err, res) {
+        assert.ifError(err);
+        done();
+      });
+    });
+  });
+
+  describe('Create two watchers', function () {
     it ('Should return the created watch id', function (done) {
       etcdClient.watcher.on('created', function (id) {
         assert.ok(id);
-        done();
+        count++;
+        if (count === 2) {
+          done();
+        }
       });
 
       etcdClient.watcher.create({
@@ -17,23 +34,29 @@ describe('Watch ops', function() {
           key: new Buffer('name')
         }
       });
+
+      etcdClient.watcher.create({
+        create_request: {
+          key: new Buffer('id')
+        }
+      });
     });
   });
 
   describe('Events', function () {
     it ('Should return the actual event', function (done) {
-      etcdClient.watcher.on('events', function (events) {
-        assert.ok(events);
-        assert.strictEqual(events[0].kv.key.toString(), 'name');
-        assert.strictEqual(events[0].kv.value.toString(), 'luigi');
+      etcdClient.watcher.on('events', function (res) {
+        assert.ok(res);
+        assert.strictEqual(res.events[0].kv.key.toString(), 'id');
+        assert.strictEqual(res.events[0].kv.value.toString(), 'luigi');
         done();
       });
 
       etcdClient.kv.put({
-        key: new Buffer('name'),
+        key: new Buffer('id'),
         value: new Buffer('luigi'),
         lease: 0
-      },function (err, res) {
+      }, function (err, res) {
         assert.ifError(err);
       });
     })
