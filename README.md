@@ -122,5 +122,39 @@ client.watcher.on('created', function (id) {
 });
 ```
 
+* Cancel/delete a watcher:
+```javascript
+client.watcher.cancel('0'); //'0' is the watcher id which associated to the watched key.
+```
+* A watcher canceled/deleted:
+```javascript
+etcdClient.watcher.on('canceled', function (id) {
+  console.log(id); //id is the watcher id.
+});
+```
+
+* Events happened on a watcher:
+```javascript
+client.watcher.on('events', function (events) {
+  console.dir(events);
+  /***********
+  events is an array which contains all events happened:
+  [ { type: 'PUT',
+    kv:
+     { key: [Object],
+       create_revision: '449',
+       mod_revision: '449',
+       version: '1',
+       value: [Object],
+       lease: '0' },
+    prev_kv: null } ]
+  **************/
+});
+```
+
+* Close the watch stream:
+```javascript
+client.watcher.close(message); //message is optional
+```
 ### License
 * MIT.
