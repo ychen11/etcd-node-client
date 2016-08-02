@@ -20,6 +20,8 @@ A gRPC based etcd client written in node.js
 * Lease service:
   - leaseGrant
   - leaseRevoke
+* Watch service:
+  Watch service is a streaming api, please check [this] out:
 
 ### How to use (Take the KV service as an example):
 * Create a client:
