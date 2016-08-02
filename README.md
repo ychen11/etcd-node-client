@@ -108,5 +108,19 @@ client.kv.txn({
 });
 ```
 
+### Watch:
+Watch is a bit different from the official v3 api, this is how we use watch:
+
+* Create a watcher on a key:
+```javascript
+client.watcher.create({create_request: new Buffer('uid')});
+```
+* A watcher created:
+```javascript
+client.watcher.on('created', function (id) {
+  console.log(id); //id is the watch_id when a key watcher created successfully.
+});
+```
+
 ### License
 * MIT.
