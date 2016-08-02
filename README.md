@@ -135,9 +135,11 @@ etcdClient.watcher.on('canceled', function (id) {
 
 * Events happened on a watcher:
 ```javascript
-client.watcher.on('events', function (events) {
-  console.dir(events);
+client.watcher.on('events', function (res) {
+  console.dir(res);
   /***********
+  res has two fields: 'id' and 'events'
+  id is the watcher id
   events is an array which contains all events happened:
   [ { type: 'PUT',
     kv:
