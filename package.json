@@ -1,6 +1,6 @@
 {
   "name": "etcd-node-client",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A gRPC based etcd client",
   "author": "yiwei",
   "keywords": [
