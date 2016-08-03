@@ -128,7 +128,7 @@ client.watcher.cancel('0'); //'0' is the watcher id which associated to the watc
 ```
 * A watcher canceled/deleted:
 ```javascript
-etcdClient.watcher.on('canceled', function (id) {
+client.watcher.on('canceled', function (id) {
   console.log(id); //id is the watcher id.
 });
 ```
@@ -141,7 +141,8 @@ client.watcher.on('events', function (res) {
   res has two fields: 'id' and 'events'
   id is the watcher id
   events is an array which contains all events happened:
-  [ { type: 'PUT',
+  {id: '1'
+   events: [ { type: 'PUT',
     kv:
      { key: [Object],
        create_revision: '449',
@@ -149,7 +150,7 @@ client.watcher.on('events', function (res) {
        version: '1',
        value: [Object],
        lease: '0' },
-    prev_kv: null } ]
+    prev_kv: null } ]}
   **************/
 });
 ```
