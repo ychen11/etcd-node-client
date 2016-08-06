@@ -99,6 +99,52 @@ service Lease {
   // TODO(xiangli) Get details information (expirations, leased keys, etc.) of a lease?
 }
 
+
+service Maintenance {
+  // Alarm activates, deactivates, and queries alarms regarding cluster health.
+  rpc Alarm(AlarmRequest) returns (AlarmResponse) {
+      option (google.api.http) = {
+        post: "/v3alpha/maintenance/alarm"
+        body: "*"
+    };
+  }
+
+  // Status gets the status of the member.
+  rpc Status(StatusRequest) returns (StatusResponse) {
+      option (google.api.http) = {
+        post: "/v3alpha/maintenance/status"
+        body: "*"
+    };
+  }
+
+  // Defragment defragments a member's backend database to recover storage space.
+  rpc Defragment(DefragmentRequest) returns (DefragmentResponse) {
+      option (google.api.http) = {
+        post: "/v3alpha/maintenance/defragment"
+        body: "*"
+    };
+  }
+
+  // Hash returns the hash of the local KV state for consistency checking purpose.
+  // This is designed for testing; do not use this in production when there
+  // are ongoing transactions.
+  rpc Hash(HashRequest) returns (HashResponse) {
+      option (google.api.http) = {
+        post: "/v3alpha/maintenance/hash"
+        body: "*"
+    };
+  }
+
+  // Snapshot sends a snapshot of the entire backend from a member over a stream to a client.
+  rpc Snapshot(SnapshotRequest) returns (stream SnapshotResponse) {
+      option (google.api.http) = {
+        post: "/v3alpha/maintenance/snapshot"
+        body: "*"
+    };
+  }
+}
+
+
 message ResponseHeader {
   // cluster_id is the ID of the cluster which sent the response.
   uint64 cluster_id = 1;
@@ -296,6 +342,29 @@ message CompactionResponse {
   ResponseHeader header = 1;
 }
 
+message HashRequest {
+}
+
+message HashResponse {
+  ResponseHeader header = 1;
+  // hash is the hash value computed from the responding member's key-value store.
+  uint32 hash = 2;
+}
+
+message SnapshotRequest {
+}
+
+message SnapshotResponse {
+  // header has the current key-value store information. The first header in the snapshot
+  // stream indicates the point in time of the snapshot.
+  ResponseHeader header = 1;
+
+  // remaining_bytes is the number of blob bytes to be sent after this message
+  uint64 remaining_bytes = 2;
+
+  // blob contains the next chunk of the snapshot in the snapshot stream.
+  bytes blob = 3;
+}
 
 message WatchRequest {
   // request_union is a request to either create a new watcher or cancel an existing watcher.
@@ -402,3 +471,64 @@ message LeaseKeepAliveResponse {
   // TTL is the new time-to-live for the lease.
   int64 TTL = 3;
 }
+
+
+message DefragmentRequest {
+}
+
+message DefragmentResponse {
+  ResponseHeader header = 1;
+}
+
+enum AlarmType {
+  NONE = 0; // default, used to query if any alarm is active
+  NOSPACE = 1; // space quota is exhausted
+}
+
+message AlarmRequest {
+  enum AlarmAction {
+  GET = 0;
+  ACTIVATE = 1;
+  DEACTIVATE = 2;
+  }
+  // action is the kind of alarm request to issue. The action
+  // may GET alarm statuses, ACTIVATE an alarm, or DEACTIVATE a
+  // raised alarm.
+  AlarmAction action = 1;
+  // memberID is the ID of the member associated with the alarm. If memberID is 0, the
+  // alarm request covers all members.
+  uint64 memberID = 2;
+  // alarm is the type of alarm to consider for this request.
+  AlarmType alarm = 3;
+}
+
+message AlarmMember {
+  // memberID is the ID of the member associated with the raised alarm.
+  uint64 memberID = 1;
+  // alarm is the type of alarm which has been raised.
+  AlarmType alarm = 2;
+}
+
+message AlarmResponse {
+  ResponseHeader header = 1;
+  // alarms is a list of alarms associated with the alarm request.
+  repeated AlarmMember alarms = 2;
+}
+
+message StatusRequest {
+}
+
+message StatusResponse {
+  ResponseHeader header = 1;
+  // version is the cluster protocol version used by the responding member.
+  string version = 2;
+  // dbSize is the size of the backend database, in bytes, of the responding member.
+  int64 dbSize = 3;
+  // leader is the member ID which the responding member believes is the current leader.
+  uint64 leader = 4;
+  // raftIndex is the current raft index of the responding member.
+  uint64 raftIndex = 5;
+  // raftTerm is the current raft term of the responding member.
+  uint64 raftTerm = 6;
+}
+
