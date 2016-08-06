@@ -24,7 +24,7 @@ A gRPC based etcd client written in node.js
   Watch service is a streaming api, please check [this](#watch) out
 * Maintenance:
   - status (same as official api)
-  - getLeaderId, check [this](#getLeaderId) out
+  - getLeaderId, check [this](#getleaderid) out
 
 ### How to use (Take the KV service as an example):
 * Create a client:
