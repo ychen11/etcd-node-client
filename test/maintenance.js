@@ -7,7 +7,7 @@ describe('Maintenance', function() {
 
   describe('Get status', function () {
     it ('Should return the cluster status', function (done) {
-      etcdClient.maintenance.getStatus({}, function (err, res) {
+      etcdClient.maintenance.getStatus(function (err, res) {
         assert.ifError(err);
         leaderId = res.leader;
         done();
