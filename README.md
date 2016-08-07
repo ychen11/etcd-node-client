@@ -22,7 +22,7 @@ A gRPC based etcd client written in node.js
   - leaseRevoke
 * Watch service:
   Watch service is a streaming api, please check [this](#watch) out
-* [Maintenance](maintenance):
+* [Maintenance](#maintenance):
   - status (same as official api)
   - getLeaderId
 
