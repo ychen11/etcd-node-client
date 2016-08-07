@@ -22,9 +22,9 @@ A gRPC based etcd client written in node.js
   - leaseRevoke
 * Watch service:
   Watch service is a streaming api, please check [this](#watch) out
-* Maintenance:
+* [Maintenance](maintenance):
   - status (same as official api)
-  - getLeaderId, check [this](#getleaderid) out
+  - getLeaderId
 
 ### How to use (Take the KV service as an example):
 * Create a client:
@@ -163,7 +163,16 @@ client.watcher.on('events', function (res) {
 client.watcher.close(message); //message is optional
 ```
 
-### getLeaderId:
+### Maintenance:
+
+* status
+```javascript
+client.maintenance.status(function(err, res) {
+  console.dir(res); //res is the response object
+});
+```
+
+* getLeaderId
 ```javascript
 client.maintenance.getLeaderId(function (err, res) {
   console.log(res); //res should be the leader id, like '10501334649042878790'
