@@ -10,6 +10,7 @@ describe('Maintenance', function() {
       etcdClient.maintenance.getStatus(function (err, res) {
         assert.ifError(err);
         leaderId = res.leader;
+        console.dir(res);
         done();
       });
     });
