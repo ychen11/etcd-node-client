@@ -1,5 +1,5 @@
 # etcd-node-client
-A gRPC based etcd client written in node.js
+A gRPC based etcd client which supports etcd V3 api, written in node.js
 
 ### Prerequisites:
 * etcd version supported: > 3.0.0
@@ -8,6 +8,11 @@ A gRPC based etcd client written in node.js
 ### About this client:
 * It is still in progress, currently it supports some but not all v3.0 APIs (Adding). Please check out [this](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md) for more about etcd official API. 
 * Proto files are directly copied from etcd repo, if there is something wrong, please check create an issue here and follow the etcd official proto files.
+
+### How to install
+```
+npm install etcd-node-client
+```
 
 ### etcd V3.0 APIs supported (Updating):
 * KV service:
