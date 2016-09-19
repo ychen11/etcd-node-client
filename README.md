@@ -136,7 +136,8 @@ client.watcher.cancel('0'); //'0' is the watcher id which associated to the watc
 ```
 * A watcher canceled/deleted:
 ```javascript
-client.watcher.on('canceled', function (id) {
+client.watcher.on('canceled', function (request, id) {
+  console.log(request.key + ''); //request is the watch reqeust body, it contains watched key and other info.
   console.log(id); //id is the watcher id.
 });
 ```
