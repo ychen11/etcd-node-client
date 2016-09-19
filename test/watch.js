@@ -21,7 +21,7 @@ describe('Watch ops', function() {
 
   describe('Create two watchers', function () {
     it ('Should return the created watch id', function (done) {
-      etcdClient.watcher.on('created', function (id) {
+      etcdClient.watcher.on('created', function (request, id) {
         assert.ok(id);
         count++;
         if (count === 2) {
@@ -35,11 +35,13 @@ describe('Watch ops', function() {
         }
       });
 
-      etcdClient.watcher.create({
-        create_request: {
-          key: new Buffer('id')
-        }
-      });
+      setTimeout(function() {
+        etcdClient.watcher.create({
+          create_request: {
+            key: new Buffer('id')
+          }
+        });
+      }, 200);
     });
   });
 
