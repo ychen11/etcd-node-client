@@ -21,10 +21,15 @@ describe('Watch ops', function() {
 
   describe('Create two watchers', function () {
     it ('Should return the created watch id', function (done) {
+      var reqs = [];
+
       etcdClient.watcher.on('created', function (request, id) {
         assert.ok(id);
+        reqs.push(request);
         count++;
         if (count === 2) {
+          assert.strictEqual('name', reqs[0].key.toString());
+          assert.strictEqual('id', reqs[1].key.toString());
           done();
         }
       });
@@ -35,13 +40,11 @@ describe('Watch ops', function() {
         }
       });
 
-      setTimeout(function() {
-        etcdClient.watcher.create({
-          create_request: {
+      etcdClient.watcher.create({
+        create_request: {
             key: new Buffer('id')
-          }
-        });
-      }, 200);
+        }
+      });
     });
   });
 
