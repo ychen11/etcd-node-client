@@ -6,7 +6,7 @@ A gRPC based etcd client which supports etcd V3 api, written in node.js
 * node.js version supported: > 0.12 (grpc only works on node 0.12 or above)
 
 ### About this client:
-* It is still in progress, currently it supports some but not all v3.0 APIs (Adding). Please check out [this](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md) for more about etcd official API. 
+* Currently it supports some but not all v3.0 APIs (Adding). Please check out [this](https://github.com/coreos/etcd/blob/master/Documentation/dev-guide/api_reference_v3.md) for more about etcd official API. 
 * Proto files are directly copied from etcd repo, if there is something wrong, please check create an issue here and follow the etcd official proto files.
 
 ### How to install
@@ -125,7 +125,8 @@ client.watcher.create({create_request: new Buffer('uid')});
 ```
 * A watcher created:
 ```javascript
-client.watcher.on('created', function (id) {
+client.watcher.on('created', function (request, id) {
+  console.log(request.key + ''); //request is the watch reqeust body, it contains watched key and other info.
   console.log(id); //id is the watch_id when a key watcher created successfully.
 });
 ```
@@ -136,8 +137,7 @@ client.watcher.cancel('0'); //'0' is the watcher id which associated to the watc
 ```
 * A watcher canceled/deleted:
 ```javascript
-client.watcher.on('canceled', function (request, id) {
-  console.log(request.key + ''); //request is the watch reqeust body, it contains watched key and other info.
+client.watcher.on('canceled', function (id) {
   console.log(id); //id is the watcher id.
 });
 ```
