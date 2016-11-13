@@ -79,4 +79,3 @@ describe('Watch ops', function() {
     });
   });
 });
-
