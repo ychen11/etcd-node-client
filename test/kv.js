@@ -1,6 +1,8 @@
 var assert = require('assert');
 var clientObj = require('./a');
 
+var revision;
+
 describe('KV Base', function() {
 
   var etcdClient = clientObj.client;
@@ -96,6 +98,7 @@ describe('KV Base', function() {
           ],
         failure: []
       }, function (err, res) {
+        revision = res.header.revision;
         done();
       });
     });
@@ -104,7 +107,7 @@ describe('KV Base', function() {
   describe('Compact ops', function () {
     it ('Should return correct response', function (done) {
       etcdClient.kv.compact({
-        revision: 5,
+        revision: revision,
         physical: false
       }, function (err, res) {
         assert.ifError(err);
@@ -113,4 +116,3 @@ describe('KV Base', function() {
     });
   });
 });
-
